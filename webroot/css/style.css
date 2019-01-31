@@ -1,0 +1,289 @@
+* {
+    margin: 0;
+}
+
+html,
+body {
+    position: relative;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper {
+    background-color: #EDEEF0;
+    min-height: calc(100vh - 50px);
+    padding-bottom: 50px;
+}
+
+aside {
+    background-color: #364552;
+}
+
+aside a,
+aside a:hover,
+aside a:focus,
+aside a:active {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+aside ul {
+    list-style: none;
+    padding: 0;
+}
+
+aside ul li {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.content {
+    background-color: #ffffff;
+    padding: 20px 40px;
+}
+
+footer {
+    position: absolute;
+    text-align: center;
+    background-color: #292929;
+    color: #ffffff;
+    height: 50px;
+    bottom: 0;
+    width: 100%;
+    line-height: 50px;
+}
+
+.row {
+    min-height: calc(100vh - 50px);
+    margin: 0;
+}
+
+.content .row {
+    min-height: 0px;
+}
+
+.preloader {
+    display: none;
+}
+
+.preloader img {
+    display: block;
+    width: 50px;
+    height: 50px;
+    margin: auto;
+}
+
+/*************** Form styles ***************/
+.form-container {
+    width: 300px;
+    margin: 20px 0;
+}
+
+.form-container .btn,
+.form-container .btn-delete,
+.form-container .btn-edit,
+.form-container .btn-add,
+.form-container .btn:focus,
+.form-container .btn-delete:focus,
+.form-container .btn-edit:focus,
+.form-container .btn-add:focus {
+    padding: 0 8px;
+    outline: none;
+    border: none;
+}
+
+.form-container .btn-add {
+    display: inline-block;
+}
+
+.form-container .btn-delete {
+    background-color: #a51919;
+}
+
+.form-container .btn-edit,
+.form-container .btn-add {
+    background-color: #445869;
+}
+
+.input-group input {
+    display: block;
+    width: 300px;
+}
+
+.input-group span {
+    display: block;
+    text-align: center;
+    min-width: 80px;
+}
+
+/*************** Flash messages style ***************/
+.error {
+    width: 100%;
+    padding: 5px;
+    z-index: 9999;
+    background-color: #c01d1d;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.success {
+    width: 100%;
+    padding: 5px;
+    z-index: 9999;
+    background-color: #38642f;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+div.hidden {
+    display: none;
+}
+
+/*************** Clients table styles ***************/
+#clients-table-container {
+    /* clear: both; */
+    max-height: 285px;
+    max-width: 770px;
+    padding: 0;
+    overflow: auto;
+    margin: 20px 0;
+}
+
+#clients-table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+#clients-table td:nth-child(4) {
+    min-width: 148px;
+}
+
+#clients-table th {
+    text-align: center;
+    background-color: #d1d1d1;
+}
+
+#clients-table tr {
+    width: 100%;
+}
+
+#clients-table tr:hover {
+    background-color: #e2e2e2;
+    cursor: pointer;
+}
+
+#clients-table td {
+    padding: 10px 10px;
+    overflow: auto;
+}
+
+/*************** Interests styles ***************/
+#clients-table-container.interests {
+    max-width: 100%;
+    max-height: 300px;
+    margin: 20px 0;
+    overflow: auto;
+}
+
+#clients-table-container.interests #clients-table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+#clients-table-container.interests #clients-table td {
+    overflow: auto;
+}
+
+.btn#btn-add-interest {
+    display: none;
+    color: #ffffff;
+    background-color: #27a532;
+    font-size: 0.9em;
+    margin: 5px 0;
+}
+
+#interests-table-container {
+    margin: 15px 0;
+    width: 100%;
+    max-height: 248px;
+    overflow: auto;
+}
+
+#interests-table {
+    display: none;
+    width: 100%;
+}
+
+#interests-table th {
+    text-align: center;
+    background-color: #9399bb;
+}
+
+#interests-table tr {
+    width: 100%;
+}
+
+#interests-table td {
+    padding: 5px 7px;
+    overflow: auto;
+}
+
+/* comment column */
+#interests-table td:nth-child(4) {
+    max-width: 350px;
+}
+
+/* date column */
+#interests-table td:nth-child(5) {
+    width: 100px;
+    text-align: center;
+}
+
+/* status column */
+#interests-table td:nth-child(6) {
+    width: 145px;
+    text-align: center;
+}
+
+/* control column */
+#interests-table td:nth-child(7) {
+    width: 80px;
+    text-align: center;
+}
+
+.fas.fa-edit.edit,
+.fas.fa-trash-alt.delete {
+    font-size: 1.1em;
+    padding: 5px;
+    cursor: pointer;
+}
+
+#interests-table .badge-initial {
+    color: #ffffff;
+    background-color: #31b647;
+}
+
+#interests-table .badge-in-work {
+    color: #ffffff;
+    background-color: #257bc2;
+}
+
+#interests-table .badge-postpone {
+    color: #ffffff;
+    background-color: #bbb4b4;
+}
+
+#interests-table .badge-callback {
+    color: #ffffff;
+    background-color: #db9936;
+}
+
+/*************** Interests modal form styles ***************/
+#interests-form .input-group-prepend {
+    min-width: 110px;
+}
+
+#interests-form span.input-group-text {
+    width: 100%;
+}

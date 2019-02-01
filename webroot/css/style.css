@@ -321,3 +321,7 @@ textarea.parsley-error {
 .error-msg {
     display: block;
 }
+
+.modal-title {
+    width: 100%;
+}

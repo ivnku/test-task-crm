@@ -160,6 +160,11 @@ $(document).ready(function () {
                 $(this).off('click', e);
             }
         });
+
+        $('.interest-dismiss').on('click', function (ev) {
+            $('.btn-edit').off('click');
+            $(this).off('click');
+        });
     });
 
     /**

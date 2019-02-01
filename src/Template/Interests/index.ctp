@@ -39,10 +39,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <div class="modal-title"></div>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <div class="modal-title"></div>        
       </div>
       <div class="modal-body">
               
@@ -86,7 +83,7 @@
 
             <?= $this->Form->button(__('Добавить интерес'), ['class' => 'btn btn-primary btn-add']) ?>
             <?= $this->Form->button(__('Обновить интерес'), ['class' => 'btn btn-primary btn-edit']) ?>
-            <?= $this->Form->button(__('Закрыть'), ['class' => 'btn btn-secondary', 'data-dismiss'=>'modal']) ?>
+            <?= $this->Form->button(__('Закрыть'), ['class' => 'btn btn-secondary interest-dismiss', 'data-dismiss'=>'modal']) ?>
         <?= $this->Form->end(); ?>
 
       </div>

@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Interests Model
@@ -93,5 +94,20 @@ class InterestsTable extends Table
         $rules->add($rules->existsIn(['status_id'], 'Statuses'));
 
         return $rules;
+    }
+
+    /**
+     * Get the list of user's interests
+     *
+     * @param int $id - client's id
+     * @return void
+     */
+    public function getAll($id)
+    {
+        $connection = ConnectionManager::get('default');
+        $results = $connection
+            ->execute('SELECT i.*, s.name status_name, s.classname status_classname FROM interests i INNER JOIN clients_interests ci ON ci.interest_id=i.id AND ci.client_id=:client_id INNER JOIN statuses s ON i.status_id=s.id ORDER BY created_at DESC;', ['client_id' => $id])
+            ->fetchAll('assoc');
+        return $results;
     }
 }

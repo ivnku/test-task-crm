@@ -81,8 +81,10 @@ class ClientsTable extends Table
             ->add('phone', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
-            ->email('email')
-            ->allowEmptyString('email');
+            ->scalar('email')
+            ->maxLength('email', 64)
+            ->allowEmptyString('email')
+            ->add('email', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         return $validator;
     }

@@ -1,57 +1,117 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Interest[]|\Cake\Collection\CollectionInterface $interests
- */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Interest'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Statuses'), ['controller' => 'Statuses', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Status'), ['controller' => 'Statuses', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Clients'), ['controller' => 'Clients', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Client'), ['controller' => 'Clients', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="interests index large-9 medium-8 columns content">
-    <h3><?= __('Interests') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('text') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('comment') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created_at') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('status_id') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($interests as $interest): ?>
-            <tr>
-                <td><?= $this->Number->format($interest->id) ?></td>
-                <td><?= h($interest->text) ?></td>
-                <td><?= h($interest->comment) ?></td>
-                <td><?= h($interest->created_at) ?></td>
-                <td><?= $interest->has('status') ? $this->Html->link($interest->status->name, ['controller' => 'Statuses', 'action' => 'view', $interest->status->id]) : '' ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $interest->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $interest->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $interest->id], ['confirm' => __('Are you sure you want to delete # {0}?', $interest->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
+<h2>Список интересов клиентов</h2>
+
+<i>Нажмите на пользователя, чтобы увидеть список его интересов</i>
+<div class="interests" id="clients-table-container">        
+    <table class="table-bordered" id="clients-table">
+        <tr>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Отчество</th>
+            <th>Тел.</th>
+            <th>E-Mail</th>
+        </tr>
+        <?php foreach ($clients as $client) : ?>
+        <tr>
+            <td hidden><?= $client->id ?></td>
+            <td><?= isset($client->lastname) ? $client->lastname : ''; ?></td>
+            <td><?= isset($client->firstname) ? $client->firstname : ''; ?></td>
+            <td><?= isset($client->middlename) ? $client->middlename : ''; ?></td>
+            <td><?= isset($client->phone) ? $client->phone : ''; ?></td>
+            <td><?= isset($client->email) ? $client->email : ''; ?></td>
+        </tr>
+        <?php endforeach; ?>
     </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+</div>
+
+<button class="btn" id="btn-add-interest" data-toggle="modal" data-target="#interest-form-modal">Добавить интерес</button>
+
+<div id="interests-table-container">
+    <div class="preloader"><img src="/img/spinner.gif"></div>
+    
+    <table class="table-bordered" id="interests-table">            
+    </table>
+
+</div>
+
+
+<!-- Modal window for adding and editing interests -->
+<div class="modal" id="interest-form-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title"></div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+              
+        <i>* - обязательные для заполнения поля</i>
+        <?= $this->Form->create($interest, ['data-parsley-validate'=>'', 'id' => 'interests-form', 'type' => 'post']) ?>
+                        
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Текст*</span>
+                </div>
+                <textarea rows="3" name="text" id="text" class="form-control" required></textarea>
+            </div>
+            
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Комментарий</span>
+                </div>
+                <textarea rows="3" name="comment" id="comment" class="form-control"></textarea>
+            </div>
+            
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Дата*</span>
+                </div>                
+                <input type="date" name="created_at" id="created-at" class="form-control" required>
+            </div>
+
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Статус*</span>
+                </div>                
+                <select name="status_id" id="status-select" class="custom-select" required>
+                    <option value="" selected>Выберите статус...</option>
+                    <?php foreach ($statuses as $status) : ?>
+                        <option value="<?= $status->id ?>">
+                            <?= $status->name ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <?= $this->Form->button(__('Добавить интерес'), ['class' => 'btn btn-primary btn-add']) ?>
+            <?= $this->Form->button(__('Обновить интерес'), ['class' => 'btn btn-primary btn-edit']) ?>
+            <?= $this->Form->button(__('Закрыть'), ['class' => 'btn btn-secondary', 'data-dismiss'=>'modal']) ?>
+        <?= $this->Form->end(); ?>
+
+      </div>
     </div>
+  </div>
+</div>
+
+
+<!-- Modal for deleteing confirmation -->
+<div class="modal fade" id="delete-confirm-modal" tabindex="-1" role="dialog" aria-labelledby="delete-confirm-modal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title"></div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Вы уверены, что хотите удалить клиентский интерес?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary delete-confirm">Да, уверен</button>
+        <button type="button" class="btn btn-secondary delete-dismiss" data-dismiss="modal">Отмена</button>
+      </div>
+    </div>
+  </div>
 </div>

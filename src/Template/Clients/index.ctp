@@ -1,57 +1,79 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Client[]|\Cake\Collection\CollectionInterface $clients
- */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Client'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Interests'), ['controller' => 'Interests', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Interest'), ['controller' => 'Interests', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="clients index large-9 medium-8 columns content">
-    <h3><?= __('Clients') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
+<h2>Список клиентов</h2>
+<?= $this->Flash->render() ?>
+<div class="row">
+    <i>Нажмите на пользователя, чтобы отредактировать или удалить его</i>
+    <div class="col-lg-8 col-md-12 col-sm-12" id="clients-table-container">        
+        <table class="table-bordered" id="clients-table">
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('firstname') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('lastname') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('middlename') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('phone') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('email') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Тел.</th>
+                <th>E-Mail</th>
             </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($clients as $client): ?>
+            <?php foreach ($clients as $client) : ?>
             <tr>
-                <td><?= $this->Number->format($client->id) ?></td>
-                <td><?= h($client->firstname) ?></td>
-                <td><?= h($client->lastname) ?></td>
-                <td><?= h($client->middlename) ?></td>
-                <td><?= h($client->phone) ?></td>
-                <td><?= h($client->email) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $client->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $client->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $client->id], ['confirm' => __('Are you sure you want to delete # {0}?', $client->id)]) ?>
-                </td>
+                <td hidden><?= $client->id ?></td>
+                <td><?= isset($client->lastname) ? $client->lastname : ''; ?></td>
+                <td><?= isset($client->firstname) ? $client->firstname : ''; ?></td>
+                <td><?= isset($client->middlename) ? $client->middlename : ''; ?></td>
+                <td><?= isset($client->phone) ? $client->phone : ''; ?></td>
+                <td><?= isset($client->email) ? $client->email : ''; ?></td>
             </tr>
             <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+        </table>
+    </div>
+
+    <div class="form-container col-lg-4 col-md-12 col-sm-12">
+        <i>* - обязательные для заполнения поля</i>
+        <?= $this->Form->create($client, ['class' => 'client-form', 'type' => 'post', 'url' => '/clients/add']) ?>
+            
+            <!-- <input type="text" name="id" id="id" class="form-control" hidden> -->
+            <?= $this->Form->control('id', ['hidden', 'id' => 'id', 'class' => 'form-control', 'label' => false]); ?>
+            
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Фамилия*</span>
+                </div>
+                <?= $this->Form->control('lastname', ['id' => 'lastname', 'class' => 'form-control', 'label' => false, 'templates' => ['inputContainer' => '{{content}}'], 'required', 'value' => '']); ?>
+                <!-- <input type="text" name="lastname" id="lastname" class="form-control" required> -->
+            </div>
+            
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Имя*</span>
+                </div>
+                <?= $this->Form->control('firstname', ['id' => 'firstname', 'class' => 'form-control', 'label' => false, 'templates' => ['inputContainer' => '{{content}}'], 'required', 'value' => '']); ?>
+                <!-- <input type="text" name="firstname" id="firstname" class="form-control" required> -->
+            </div>
+            
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Отчество</span>
+                </div>
+                <?= $this->Form->control('middlename', ['id' => 'middlename', 'class' => 'form-control', 'label' => false, 'templates' => ['inputContainer' => '{{content}}'], 'value' => '']); ?>
+                <!-- <input type="text" name="middlename" id="middlename" class="form-control"> -->
+            </div>
+            
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Тел.*</span>
+                </div>
+                <?= $this->Form->control('phone', ['id' => 'phone', 'class' => 'form-control', 'label' => false, 'templates' => ['inputContainer' => '{{content}}'], 'required', 'value' => '']); ?>
+                <!-- <input type="text" name="phone" id="phone" class="form-control" required> -->
+            </div>
+            
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Email</span>
+                </div>
+                <?= $this->Form->control('email', ['id' => 'email', 'class' => 'form-control', 'label' => false, 'templates' => ['inputContainer' => '{{content}}'], 'value' => '']); ?>
+                <!-- <input type="text" name="email" id="email" class="form-control"> -->
+            </div>
+
+            <?= $this->Form->button(__('Добавить'), ['class'=>'btn btn-primary btn-add']) ?>
+            <?= $this->Form->button(__('Редактировать'), ['class'=>'btn btn-primary btn-edit']) ?>
+            <?= $this->Form->button(__('Удалить'), ['class'=>'btn btn-primary btn-delete']) ?>
+        <?= $this->Form->end(); ?>
     </div>
 </div>

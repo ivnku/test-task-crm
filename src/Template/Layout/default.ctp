@@ -13,7 +13,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
-$cakeDescription = 'CakePHP: the rapid development php framework';
+$cakeDescription = 'Simple CRM system (test task)';
 ?>
 <!DOCTYPE html>
 <html>
@@ -31,6 +31,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->css('style.css') ?>
     <?= $this->Html->script('jquery-3.3.1.min.js') ?>
     <?= $this->Html->script('bootstrap.min.js') ?>
+    <?= $this->Html->script('parsley.min.js') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
@@ -51,8 +52,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                         <?= $this->Html->link('Интересы клиента', '/interests', ['class' => 'button']); ?>
                     </li>
                 </ul>
-            </aside>
-            <?= $this->Flash->render() ?>
+            </aside>            
             <div class="content col-lg-11">
                 <?= $this->fetch('content') ?>
             </div>

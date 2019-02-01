@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * Interests Controller
@@ -12,6 +13,11 @@ use App\Controller\AppController;
  */
 class InterestsController extends AppController
 {
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('RequestHandler');
+    }
 
     /**
      * Index method
@@ -20,29 +26,32 @@ class InterestsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Statuses']
-        ];
-        $interests = $this->paginate($this->Interests);
+        $clients_model = TableRegistry::getTableLocator()->get('Clients');
+        $statuses_model = TableRegistry::getTableLocator()->get('Statuses');
 
-        $this->set(compact('interests'));
+        $clients = $clients_model->find('all');
+        $statuses = $statuses_model->find('all');
+        $interest = $this->Interests->newEntity();                
+
+        $this->set(compact('clients', 'statuses', 'interest'));
     }
 
     /**
-     * View method
+     * Show the list of user's interests
      *
-     * @param string|null $id Interest id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @param string $id
+     * @return void
      */
-    public function view($id = null)
+    public function showAll($id)
     {
-        $interest = $this->Interests->get($id, [
-            'contain' => ['Statuses', 'Clients']
-        ]);
+        $this->request->allowMethod('ajax');
+        $this->response->withDisabledCache();
 
-        $this->set('interest', $interest);
-    }
+        $result = $this->Interests->getAll($id);
+
+        $this->set('result', $result);
+        $this->set('_serialize', ['result']);
+    }    
 
     /**
      * Add method
@@ -55,15 +64,15 @@ class InterestsController extends AppController
         if ($this->request->is('post')) {
             $interest = $this->Interests->patchEntity($interest, $this->request->getData());
             if ($this->Interests->save($interest)) {
-                $this->Flash->success(__('The interest has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $message = 'Интерес клиента был успешно добавлен.';
+                $status = 'success';
+                $this->set(compact('status', 'message'));
+            } else {
+                $message = 'Ошибка при добавлении интереса клиента.';
+                $status = 'danger';
+                $this->set(compact('status', 'message'));                
             }
-            $this->Flash->error(__('The interest could not be saved. Please, try again.'));
         }
-        $statuses = $this->Interests->Statuses->find('list', ['limit' => 200]);
-        $clients = $this->Interests->Clients->find('list', ['limit' => 200]);
-        $this->set(compact('interest', 'statuses', 'clients'));
     }
 
     /**
@@ -80,16 +89,16 @@ class InterestsController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $interest = $this->Interests->patchEntity($interest, $this->request->getData());
-            if ($this->Interests->save($interest)) {
-                $this->Flash->success(__('The interest has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The interest could not be saved. Please, try again.'));
-        }
-        $statuses = $this->Interests->Statuses->find('list', ['limit' => 200]);
-        $clients = $this->Interests->Clients->find('list', ['limit' => 200]);
-        $this->set(compact('interest', 'statuses', 'clients'));
+            if (!$interest->isNew() and $this->Interests->save($interest)) {
+                $message = 'Интерес клиента был успешно обновлен.';
+                $status = 'success';
+                $this->set(compact('status', 'message'));
+            } else {
+                $message = 'Ошибка при обновлении интереса клиента.';
+                $status = 'danger';
+                $this->set(compact('status', 'message'));
+            }            
+        }        
     }
 
     /**
@@ -104,11 +113,13 @@ class InterestsController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $interest = $this->Interests->get($id);
         if ($this->Interests->delete($interest)) {
-            $this->Flash->success(__('The interest has been deleted.'));
+            $message = 'Интерес клиента был успешно удален.';
+            $status = 'success';
+            $this->set(compact('status', 'message'));
         } else {
-            $this->Flash->error(__('The interest could not be deleted. Please, try again.'));
+            $message = 'Ошибка при удалении интереса клиента.';
+            $status = 'danger';
+            $this->set(compact('status', 'message'));
         }
-
-        return $this->redirect(['action' => 'index']);
     }
 }

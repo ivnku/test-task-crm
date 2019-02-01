@@ -12,6 +12,11 @@ use App\Controller\AppController;
  */
 class ClientsController extends AppController
 {
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('RequestHandler');
+    }
 
     /**
      * Index method
@@ -20,8 +25,7 @@ class ClientsController extends AppController
      */
     public function index()
     {
-        $clients = $this->paginate($this->Clients);
-
+        $clients = $this->Clients->find('all');
         $this->set(compact('clients'));
     }
 
@@ -48,18 +52,20 @@ class ClientsController extends AppController
      */
     public function add()
     {
+        $this->autoRender = false;
         $client = $this->Clients->newEntity();
+        
         if ($this->request->is('post')) {
             $client = $this->Clients->patchEntity($client, $this->request->getData());
             if ($this->Clients->save($client)) {
-                $this->Flash->success(__('The client has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $this->Flash->success(__('Клиент успешно добавлен.'));
+            } else {
+                $this->Flash->error(__('Не удалось создать клиента, клиент с таким телефоном или email уже существует!'));
             }
-            $this->Flash->error(__('The client could not be saved. Please, try again.'));
+            return $this->redirect(['action' => 'index']);
         }
-        $interests = $this->Clients->Interests->find('list', ['limit' => 200]);
-        $this->set(compact('client', 'interests'));
+        // $interests = $this->Clients->Interests->find('list', ['limit' => 200]);
+        // $this->set(compact('client', 'interests'));
     }
 
     /**
@@ -71,20 +77,21 @@ class ClientsController extends AppController
      */
     public function edit($id = null)
     {
+        $this->autoRender = false;
         $client = $this->Clients->get($id, [
             'contain' => ['Interests']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $client = $this->Clients->patchEntity($client, $this->request->getData());
             if ($this->Clients->save($client)) {
-                $this->Flash->success(__('The client has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $this->Flash->success(__('Клиент успешно сохранен.'));
+            } else {
+                $this->Flash->error(__('Клиент не может быть сохранен. Попробуйте еще раз.'));
             }
-            $this->Flash->error(__('The client could not be saved. Please, try again.'));
+            return $this->redirect(['action' => 'index']);
         }
-        $interests = $this->Clients->Interests->find('list', ['limit' => 200]);
-        $this->set(compact('client', 'interests'));
+        // $interests = $this->Clients->Interests->find('list', ['limit' => 200]);
+        // $this->set(compact('client', 'interests'));
     }
 
     /**
@@ -99,9 +106,9 @@ class ClientsController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $client = $this->Clients->get($id);
         if ($this->Clients->delete($client)) {
-            $this->Flash->success(__('The client has been deleted.'));
+            $this->Flash->success(__('Клиент успешно удален.'));
         } else {
-            $this->Flash->error(__('The client could not be deleted. Please, try again.'));
+            $this->Flash->error(__('Клиент не может быть удален. Попробуйте еще раз.'));
         }
 
         return $this->redirect(['action' => 'index']);

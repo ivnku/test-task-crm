@@ -74,7 +74,7 @@ footer {
     margin: auto;
 }
 
-/*************** Form styles ***************/
+/*************** Clients Form styles ***************/
 .form-container {
     width: 300px;
     margin: 20px 0;
@@ -118,22 +118,8 @@ footer {
 }
 
 /*************** Flash messages style ***************/
-.error {
-    width: 100%;
-    padding: 5px;
-    z-index: 9999;
-    background-color: #c01d1d;
-    color: #ffffff;
-    cursor: pointer;
-}
-
-.success {
-    width: 100%;
-    padding: 5px;
-    z-index: 9999;
-    background-color: #38642f;
-    color: #ffffff;
-    cursor: pointer;
+.alert {
+   cursor: pointer;
 }
 
 div.hidden {
@@ -152,6 +138,7 @@ div.hidden {
 
 #clients-table {
     table-layout: fixed;
+    min-height: 285px;
     width: 100%;
 }
 
@@ -203,8 +190,7 @@ div.hidden {
     margin: 5px 0;
 }
 
-#interests-table-container {
-    margin: 15px 0;
+#interests-table-container {    
     width: 100%;
     max-height: 248px;
     overflow: auto;
@@ -252,30 +238,34 @@ div.hidden {
     text-align: center;
 }
 
-.fas.fa-edit.edit,
-.fas.fa-trash-alt.delete {
+.interest-edit,
+.interest-delete {
     font-size: 1.1em;
     padding: 5px;
     cursor: pointer;
 }
 
-#interests-table .badge-initial {
+#interests-table .badge-initial,
+#interests-table .badge-in-work,
+#interests-table .badge-postpone,
+#interests-table .badge-callback {
+    width: 127px;
     color: #ffffff;
+}
+
+#interests-table .badge-initial {
     background-color: #31b647;
 }
 
 #interests-table .badge-in-work {
-    color: #ffffff;
     background-color: #257bc2;
 }
 
 #interests-table .badge-postpone {
-    color: #ffffff;
     background-color: #bbb4b4;
 }
 
 #interests-table .badge-callback {
-    color: #ffffff;
     background-color: #db9936;
 }
 
@@ -286,4 +276,48 @@ div.hidden {
 
 #interests-form span.input-group-text {
     width: 100%;
+}
+
+#interests-form .btn-add,
+#interests-form .btn-edit {
+    display: none;
+}
+
+/* Parsley styles */
+input.parsley-success,
+select.parsley-success,
+textarea.parsley-success {
+    color: #468847;
+    background-color: #DFF0D8;
+    border: 1px solid #D6E9C6;
+}
+
+input.parsley-error,
+select.parsley-error,
+textarea.parsley-error {
+    color: #B94A48;
+    background-color: #F2DEDE;
+    border: 1px solid #EED3D7;
+}
+
+.parsley-errors-list {
+    margin: 2px 0 3px;
+    padding: 0;
+    list-style-type: none;
+    font-size: 0.9em;
+    line-height: 0.9em;
+    opacity: 0;
+
+    transition: all .3s ease-in;
+    -o-transition: all .3s ease-in;
+    -moz-transition: all .3s ease-in;
+    -webkit-transition: all .3s ease-in;
+}
+
+.parsley-errors-list.filled {
+    opacity: 1;
+}
+
+.error-msg {
+    display: block;
 }

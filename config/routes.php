@@ -108,4 +108,5 @@ Router::scope('/interests', function (RouteBuilder $routes) {
 
     $routes->connect('/show-all', ['controller' => 'Interests', 'action' => 'showAll']);
     $routes->connect('/add', ['controller' => 'Interests', 'action' => 'add']);
+    $routes->connect('/edit', ['controller' => 'Interests', 'action' => 'edit']);
 });

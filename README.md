@@ -12,4 +12,4 @@ In this system you can:
 - Put a certain status on the client's interest
 - See history of all client's interests
 
-![](Simple_CRM_system_Clients.gif)
+![](Simple_CRM_system_Interests.gif)
